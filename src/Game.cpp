@@ -10,8 +10,24 @@ void Game::run() {
         while (window.pollEvent(event)) {
             if (event.type == sf::Event::Closed)
                 window.close();
+            else if (paused && event.type == sf::Event::MouseButtonPressed){
+                if (event.mouseButton.button == sf::Mouse::Left){
+                    field.recolor(event.mouseButton.x, event.mouseButton.y);
+                }
+            }
+            else if (event.type == sf::Event::KeyPressed){
+                if (event.key.code == sf::Keyboard::P){
+                    paused = !paused;
+                }
+            }
+
         }
-        window.clear(GRAY);
+
+        if (!paused){
+            field.next_move();
+        }
+
+        window.clear(toS(ColorType::WHITE));
         field.print();
         window.display();
     }

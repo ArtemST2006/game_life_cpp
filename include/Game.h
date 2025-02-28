@@ -1,10 +1,18 @@
+#pragma once
+
 #include <SFML/Graphics.hpp>
 #include <vector>
 #include <memory>
 
-#define WHITE sf::Color::White
-#define BLACK sf::Color::Black
-#define GRAY sf::Color(153, 153, 153)
+enum class ColorType {
+    WHITE,
+    BLACK,
+    GRAY,
+    GREEN,
+    RED
+};
+
+sf::Color toS(ColorType);
 
 class Cell {
 private:
@@ -13,20 +21,26 @@ private:
     sf::RenderWindow& window;
     sf::RectangleShape rect;
 public:
+    ColorType color;
+    int alife = -1;
     Cell(int size, int x, int y, sf::RenderWindow& window);
     void print();
+    void recolor();
 };
 
 class Field {
 private:
     int size, n;
-    std::vector<std::vector<Cell*>> field;
+    std::vector<std::vector<std::pair<Cell*, int>>> field;
 protected:
     sf::RenderWindow& window;
 public:
     Field(int size, int n, sf::RenderWindow& window);
     ~Field();
     void print();
+    void recolor(int x, int y);
+    void next_move();
+    void in_rm_neighbors(int, int, int);
 };
 
 class Game {
@@ -34,6 +48,7 @@ private:
     sf::RenderWindow window;
     Field field;
     int size, n;
+    bool paused = true;
 public:
     Game(int size, int n);
     void run();
