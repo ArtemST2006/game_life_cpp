@@ -9,6 +9,6 @@ find_package(SFML 2.6.1 REQUIRED graphics window system)
 include_directories(${SFML_INCLUDE_DIR})
 link_directories(${SFML_LIBRARY_DIR})
 
-add_executable(a src/main.cpp src/Field.cpp src/Cell.cpp src/Game.cpp src/utils.cpp)
+add_executable(a src/main.cpp src/Field.cpp src/Cell.cpp src/Game.cpp src/utils.cpp src/sett.cpp)
 
 target_link_libraries(a sfml-graphics sfml-window sfml-system)

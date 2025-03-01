@@ -3,6 +3,15 @@
 #include <SFML/Graphics.hpp>
 #include <vector>
 #include <memory>
+#include <thread>
+#include <chrono>
+#include <mutex>
+#include <queue>
+#include <mutex>
+#include <iostream>
+
+extern int time_sleep;
+extern std::mutex eventMutex;
 
 enum class ColorType {
     WHITE,
@@ -46,10 +55,29 @@ public:
 class Game {
 private:
     sf::RenderWindow window;
-    Field field;
-    int size, n;
-    bool paused = true;
 public:
+    Field field;
+    std::queue<sf::Event> events;
+    bool paused = true;
+    int size, n;
     Game(int size, int n);
     void run();
+    bool is_open();
+    sf::RenderWindow& get_window(); //
 };
+
+class States {
+private:
+    Game& game;
+    sf::RenderWindow window;
+public:
+    std::queue<sf::Event> events;
+    States(Game&);
+    void run();
+    sf::RenderWindow& get_window(); //
+};
+
+
+void sleep(int);
+void processing_events(States&, Game&);
+

@@ -8,22 +8,12 @@ void Game::run() {
     while (window.isOpen()) {
         sf::Event event;
         while (window.pollEvent(event)) {
-            if (event.type == sf::Event::Closed)
-                window.close();
-            else if (paused && event.type == sf::Event::MouseButtonPressed){
-                if (event.mouseButton.button == sf::Mouse::Left){
-                    field.recolor(event.mouseButton.x, event.mouseButton.y);
-                }
-            }
-            else if (event.type == sf::Event::KeyPressed){
-                if (event.key.code == sf::Keyboard::P){
-                    paused = !paused;
-                }
-            }
-
+            std::lock_guard<std::mutex> lock(eventMutex);
+            events.push(event);
         }
 
         if (!paused){
+            sleep(time_sleep);
             field.next_move();
         }
 
@@ -31,4 +21,12 @@ void Game::run() {
         field.print();
         window.display();
     }
+}
+
+bool Game::is_open() {
+    return window.isOpen();
+}
+
+sf::RenderWindow& Game::get_window() {
+    return window;
 }
