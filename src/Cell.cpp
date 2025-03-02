@@ -15,8 +15,8 @@ void Cell::print() {
 }
 
 void Cell::recolor() {
-    if (color == ColorType::WHITE) {
-        color = ColorType::GREEN;
+    if (alife == -1) {
+        color = color_cell;
         rect.setFillColor(toS(color));
     }
     else{

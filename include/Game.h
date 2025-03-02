@@ -9,9 +9,11 @@
 #include <queue>
 #include <mutex>
 #include <iostream>
+#include <string>
 
 extern int time_sleep;
 extern std::mutex eventMutex;
+
 
 enum class ColorType {
     WHITE,
@@ -20,6 +22,8 @@ enum class ColorType {
     GREEN,
     RED
 };
+
+extern ColorType color_cell;
 
 sf::Color toS(ColorType);
 
@@ -80,4 +84,5 @@ public:
 
 void sleep(int);
 void processing_events(States&, Game&);
+ColorType to_cColr(std::string);
 

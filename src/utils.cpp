@@ -16,6 +16,15 @@ void sleep(int m){
     std::this_thread::sleep_for(std::chrono::milliseconds(m));
 }
 
+ColorType to_cColr(std::string c){
+    if (c == "white") return ColorType::WHITE;
+    if (c == "black") return ColorType::BLACK;
+    if (c == "gray") return ColorType::GRAY;
+    if (c == "green") return ColorType::GREEN;
+    if (c == "red") return ColorType::RED;
+    return ColorType::GREEN;
+}
+
 void processing_events(States& states, Game& game){
     while (true){
         if (!game.is_open()) break;
