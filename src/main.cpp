@@ -1,12 +1,11 @@
 #include "../include/game.h"
-
 #include <yaml-cpp/yaml.h>
 
 int time_sleep = 60;
-std::mutex eventMutex;
 ColorType color_cell;
+int amount = 0;
 
-void tmp(States& state){
+void init_sett_thread(States& state){
     state.run();
 }
 
@@ -16,16 +15,18 @@ int main() {
     int n = config["n"].as<int>();
     std::string clr = config["color"].as<std::string>();
     color_cell = to_cColr(clr);
+    bool init_random = config["init_random"].as<bool>();
 
-    Game new_game(size, n); //size, n
-    States state(new_game);
+    Game game(size, n); //size, n
+    if (init_random)
+        game.init_random();
+    States state(game);
 
-    std::thread sec_w(tmp, std::ref(state));
-    std::thread proc(processing_events, std::ref(state), std::ref(new_game));
-    new_game.run();
+    std::thread settings_window_thread(init_sett_thread, std::ref(state));
+    game.run();
 
-    sec_w.join();
-    proc.join();
+    
+    settings_window_thread.join();
 
     return 0;
 }

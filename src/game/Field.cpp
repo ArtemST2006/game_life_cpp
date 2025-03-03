@@ -1,5 +1,6 @@
-#include "../include/game.h"
+#include "../../include/game.h"
 #include <vector>
+#include <random>
 
 Field::Field(int size, int n, sf::RenderWindow& window) : size(size), n(n), window(window) {
     field.resize(n);
@@ -44,6 +45,8 @@ void Field::in_rm_neighbors(int i, int j, int mode=0) {
 void Field::recolor(int x, int y) {
     int i = x/size, j = y/size;
     field[i][j].first->recolor();
+    if (field[i][j].first->alife == 1) amount++;
+    else amount--;
     in_rm_neighbors(i, j, field[i][j].first->alife);
 }
 
@@ -64,5 +67,16 @@ void Field::next_move() {
 
     for (auto [i, j] : to_flip) {
         recolor(i * size, j * size);
+    }
+}
+
+void Field::init_random(){
+    for (int i = 0; i < n; i++){
+        for (int j = 0; j < n; j++){
+            int r_ch = rand() % 3;
+            if (r_ch == 0){
+                recolor(i * size, j * size);
+            }
+        }
     }
 }

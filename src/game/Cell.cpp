@@ -1,4 +1,4 @@
-#include "../include/game.h"
+#include "../../include/game.h"
 
 Cell::Cell(int size, int x, int y, sf::RenderWindow& window) : x(x), y(y), size(size), window(window) {
     pos_x = x * size;

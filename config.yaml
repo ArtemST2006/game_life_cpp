@@ -1,3 +1,4 @@
-size : 30
+size : 20
 n : 40
 color : red
+init_random : true

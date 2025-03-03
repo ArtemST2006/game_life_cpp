@@ -11,7 +11,7 @@ link_directories(${SFML_LIBRARY_DIR})
 
 find_package(yaml-cpp REQUIRED)
 
-add_executable(a src/main.cpp src/Field.cpp src/Cell.cpp src/Game.cpp src/utils.cpp src/sett.cpp)
+add_executable(a src/main.cpp src/game/Field.cpp src/game/Cell.cpp src/game/Game.cpp src/utils/utils.cpp src/game/sett.cpp)
 
 target_link_libraries(a sfml-graphics sfml-window sfml-system)
 target_link_libraries(a yaml-cpp)
