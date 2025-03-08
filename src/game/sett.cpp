@@ -1,4 +1,4 @@
-#include "../../include/game.h"
+#include "../../include/union.h"
 
 
 States::States(Game& game) : game(game) {
@@ -31,7 +31,7 @@ void States::run(){
                 time_sleep = std::min(time_sleep + 10, 400);
             else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
                 time_sleep = std::max(time_sleep - 10, 10);
-            else if(event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::A){
+            else if(event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Space){
                 game.push_paused();
             }
         }

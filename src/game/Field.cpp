@@ -1,8 +1,7 @@
-#include "../../include/game.h"
-#include <vector>
-#include <random>
+#include "../../include/union.h"
 
-Field::Field(int size, int n, sf::RenderWindow& window) : size(size), n(n), window(window) {
+Field::Field(int size, int n, sf::RenderWindow& window, std::vector<int>& lis, std::vector<int>& lis_d) : size(size), n(n), 
+            window(window), lis(lis), lis_d(lis_d) {
     field.resize(n);
     for (int i = 0; i < n; i++) {
         for (int j = 0; j < n; j++) {
@@ -43,7 +42,9 @@ void Field::in_rm_neighbors(int i, int j, int mode=0) {
 
 
 void Field::recolor(int x, int y) {
-    int i = x/size, j = y/size;
+    int i = x / size;
+    int j = y / size;
+
     field[i][j].first->recolor();
     if (field[i][j].first->alife == 1) amount++;
     else amount--;
@@ -52,14 +53,16 @@ void Field::recolor(int x, int y) {
 
 
 void Field::next_move() {
+    auto start_time=std::chrono::steady_clock::now(); 
+
     std::vector<std::pair<int, int>> to_flip;
 
     for (int i = 0; i < n; i++) {
         for (int j = 0; j < n; j++) {
-            if (field[i][j].first->alife == -1 && field[i][j].second == 3) {
+            if (field[i][j].first->alife == -1 && in(field[i][j].second, lis)) {
                 to_flip.push_back({i, j});
             } 
-            else if (field[i][j].first->alife == 1 && !(field[i][j].second == 3 || field[i][j].second == 2)) {
+            else if (field[i][j].first->alife == 1 && in(field[i][j].second, lis_d)) {
                 to_flip.push_back({i, j});
             }
         }
@@ -68,6 +71,11 @@ void Field::next_move() {
     for (auto [i, j] : to_flip) {
         recolor(i * size, j * size);
     }
+
+    auto end_time=std::chrono::steady_clock::now();
+    auto res=std::chrono::duration_cast<std::chrono::milliseconds>(end_time-start_time);
+    std::cout << res.count() << std::endl;
+
 }
 
 void Field::init_random(){
@@ -79,4 +87,21 @@ void Field::init_random(){
             }
         }
     }
+}
+
+
+bool Field::in(int x, std::vector<int>& lis){
+    return find(lis.begin(), lis.end(), x) != lis.end();
+}
+
+void Field::clear(){
+    for (int i = 0; i < n; i++){
+        for (int j = 0; j < n; j++){
+            field[i][j].first->alife = -1;
+            field[i][j].first->color = ColorType::WHITE;
+            field[i][j].second = 0;
+            field[i][j].first->chacge();
+        }
+    }
+    amount=0;
 }

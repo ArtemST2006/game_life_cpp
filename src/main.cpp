@@ -1,4 +1,4 @@
-#include "../include/game.h"
+#include "../include/union.h"
 #include <yaml-cpp/yaml.h>
 
 int time_sleep = 60;
@@ -16,8 +16,10 @@ int main() {
     std::string clr = config["color"].as<std::string>();
     color_cell = to_cColr(clr);
     bool init_random = config["init_random"].as<bool>();
+    std::vector<int> lis = config["create_life"].as<std::vector<int>>();
+    std::vector<int> lis_d = config["deapth_life"].as<std::vector<int>>();
 
-    Game game(size, n); //size, n
+    Game game(size, n, lis, lis_d); //size, n
     if (init_random)
         game.init_random();
     States state(game);

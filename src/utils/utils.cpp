@@ -1,4 +1,4 @@
-#include "../../include/game.h"
+#include "../../include/union.h"
 
 sf::Color toS(ColorType color) {
     switch (color) {
